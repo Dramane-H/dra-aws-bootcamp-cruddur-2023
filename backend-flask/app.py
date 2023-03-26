@@ -3,8 +3,8 @@ from flask import request
 from flask_cors import CORS, cross_origin
 import os
 
-from services.notifications_activities import *
 from services.home_activities import *
+from services.notifications_activities import *
 from services.user_activities import *
 from services.create_activity import *
 from services.create_reply import *
