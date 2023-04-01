@@ -56,6 +56,10 @@ tracer = trace.get_tracer(__name__)
 # -----
 app = Flask(__name__)
 
+#aws x-ray --
+XRayMiddleware(app, xray_recorder)
+
+
 #honeycomb -----
 FlaskInstrumentor().instrument_app(app)
 RequestsInstrumentor().instrument()
@@ -75,8 +79,6 @@ cors = CORS(
 # aws ---
 xray_url = os.getenv("AWS_XRAY_URL")
 xray_recorder.configure(service='Cruddur', dynamic_naming=xray_url)
-XRayMiddleware(app, xray_recorder)
-
 
 @app.route("/api/message_groups", methods=['GET'])
 def data_message_groups():
