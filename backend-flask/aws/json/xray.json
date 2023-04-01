@@ -1,11 +1,11 @@
 {
     "SamplingRule": {
-        "RuleName": "Cruddur",
+        "RuleName": "dram-trace",
         "ResourceARN": "*",
         "Priority": 9000,
         "FixedRate": 0.1,
         "ReservoirSize": 5,
-        "ServiceName": "Cruddur",
+        "ServiceName": "backend-flask",
         "ServiceType": "*",
         "Host": "*",
         "HTTPMethod": "*",
