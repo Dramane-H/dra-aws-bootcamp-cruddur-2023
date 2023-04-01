@@ -4,7 +4,6 @@ from flask_cors import CORS, cross_origin
 import os
 
 from services.home_activities import *
-from services.notifications_activities import *
 from services.user_activities import *
 from services.create_activity import *
 from services.create_reply import *
@@ -14,16 +13,23 @@ from services.messages import *
 from services.create_message import *
 from services.show_activity import *
 
-# aws x-ray ----
+# HoneyComb ---------
+from opentelemetry import trace
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from opentelemetry.instrumentation.requests import RequestsInstrumentor
+from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.sdk.trace.export import ConsoleSpanExporter, SimpleSpanProcessor
+
+# X-RAY ----------
 from aws_xray_sdk.core import xray_recorder
 from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
 
-
-# cloudWatch
-
+# CloudWatch Logs ----
 import watchtower
 import logging
-from time import strftime
+
 
 # Configuring Logger to Use CloudWatch
 LOGGER = logging.getLogger(__name__)
@@ -32,35 +38,33 @@ console_handler = logging.StreamHandler()
 cw_handler = watchtower.CloudWatchLogHandler(log_group='cruddur')
 LOGGER.addHandler(console_handler)
 LOGGER.addHandler(cw_handler)
-LOGGER.info("some message")
-LOGGER.info('Hello Cloudwatch! from  /api/activities/home')
+LOGGER.info("test log")
 
-#honeycomb -----
-from opentelemetry import trace
-from opentelemetry.instrumentation.flask import FlaskInstrumentor
-from opentelemetry.instrumentation.requests import RequestsInstrumentor
-from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
-from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import BatchSpanProcessor
-
-
-#honeycomb -----
+# HoneyComb ---------
 # Initialize tracing and an exporter that can send data to Honeycomb
 provider = TracerProvider()
 processor = BatchSpanProcessor(OTLPSpanExporter())
 provider.add_span_processor(processor)
+
+# X-RAY ----------
+xray_url = os.getenv("AWS_XRAY_URL")
+xray_recorder.configure(service='backend-flask', dynamic_naming=xray_url)
+
+# OTEL ----------
+# Show this in the logs within the backend-flask app (STDOUT)
+#simple_processor = SimpleSpanProcessor(ConsoleSpanExporter())
+#provider.add_span_processor(simple_processor)
+
 trace.set_tracer_provider(provider)
 tracer = trace.get_tracer(__name__)
 
-
-# -----
 app = Flask(__name__)
 
-#aws x-ray --
+# X-RAY ----------
 XRayMiddleware(app, xray_recorder)
 
-
-#honeycomb -----
+# HoneyComb ---------
+# Initialize automatic instrumentation with Flask
 FlaskInstrumentor().instrument_app(app)
 RequestsInstrumentor().instrument()
 
@@ -76,9 +80,12 @@ cors = CORS(
   methods="OPTIONS,GET,HEAD,POST"
 )
 
-# aws ---
-xray_url = os.getenv("AWS_XRAY_URL")
-xray_recorder.configure(service='Cruddur', dynamic_naming=xray_url)
+# CloudWatch Logs -----
+@app.after_request
+def after_request(response):
+    timestamp = strftime('[%Y-%b-%d %H:%M]')
+    LOGGER.error('%s %s %s %s %s %s', timestamp, request.remote_addr, request.method, request.scheme, request.full_path, response.status)
+    return response
 
 @app.route("/api/message_groups", methods=['GET'])
 def data_message_groups():
@@ -88,11 +95,6 @@ def data_message_groups():
     return model['errors'], 422
   else:
     return model['data'], 200
-@app.after_request
-def after_request(response):
-    timestamp = strftime('[%Y-%b-%d %H:%M]')
-    LOGGER.error('%s %s %s %s %s %s', timestamp, request.remote_addr, request.method, request.scheme, request.full_path, response.status)
-    return response
 
 @app.route("/api/messages/@<string:handle>", methods=['GET'])
 def data_messages(handle):
@@ -121,16 +123,13 @@ def data_create_message():
   return
 
 @app.route("/api/activities/home", methods=['GET'])
+@xray_recorder.capture('activities_home')
 def data_home():
   data = HomeActivities.run()
   return data, 200
 
-@app.route("/api/activities/notifications", methods=['GET'])
-def data_notifications():
-  data = NotificationsActivities.run()
-  return data, 200
-
 @app.route("/api/activities/@<string:handle>", methods=['GET'])
+@xray_recorder.capture('activities_users')
 def data_handle(handle):
   model = UserActivities.run(handle)
   if model['errors'] is not None:
@@ -162,6 +161,7 @@ def data_activities():
   return
 
 @app.route("/api/activities/<string:activity_uuid>", methods=['GET'])
+@xray_recorder.capture('activities_show')
 def data_show_activity(activity_uuid):
   data = ShowActivity.run(activity_uuid=activity_uuid)
   return data, 200
