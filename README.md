@@ -3,6 +3,17 @@
 - Application: Cruddur
 - Cohort: 2023-A1
 
+
+# Install AWS-CLI
+sudo rm ~/.aws/
+curl -O https://bootstrap.pypa.io/get-pip.py
+python3 get-pip.py --user
+pip3 install awscli --upgrade --user
+ aws --version
+
+
+
+
 This is the starting codebase that will be used in the FREE AWS Cloud Project Bootcamp 2023
 
 ![Cruddur Graphic](_docs/assets/cruddur-banner.jpg)
