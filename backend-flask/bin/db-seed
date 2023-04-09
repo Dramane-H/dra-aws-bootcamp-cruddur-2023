@@ -1,10 +1,11 @@
 #! /usr/bin/bash
 
+
 echo "db-schema-load"
 
-schema_path="$(realpath .)/db/schema.sql"
+seed_path="$(realpath .)/db/seed.sql"
 
-echo $schema_path
+echo $seed_path
 
 
 if [ "$1" = "prod" ]; then
@@ -15,4 +16,4 @@ fi
 
 
 
-psql $CONNECTION_URL cruddur < $schema_path
+psql $CONNECTION_URL cruddur < $seed_path

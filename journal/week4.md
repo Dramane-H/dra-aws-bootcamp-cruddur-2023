@@ -148,6 +148,7 @@ mkdir /workspace/aws-bootcamp-cruddur-2023/backend-flask/bin
 ```sh
 export CONNECTION_URL="postgresql://postgres:password@127.0.0.1:5433/cruddur"
 gp env CONNECTION_URL="postgresql://postgres:password@localhost:5433/cruddur"
+
 export PROD_CONNECTION_URL="postgresql://cruddurroot:dramanedb123@cruddur-db-instance.cdmtknpdvfmz.eu-west-3.rds.amazonaws.com:5432/cruddur"
 
 gp env PROD_CONNECTION_URL="postgresql://cruddurroot:dramanedb123@cruddur-db-instance.cdmtknpdvfmz.eu-west-3.rds.amazonaws.com:5432/cruddur"
