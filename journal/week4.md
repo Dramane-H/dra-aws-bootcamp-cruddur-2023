@@ -366,13 +366,15 @@ aws rds create-db-instance \
   --engine postgres \
   --engine-version  14.6 \
   --master-username root \
+  # change your password
   --master-user-password huEE33z2Qvl383 \
   --allocated-storage 20 \
   --availability-zone ca-central-1a \
   --backup-retention-period 0 \
   --port 5432 \
   --no-multi-az \
-  --db-name cruddur \
+  # change your db name
+  --db-name cruddur \ 
   --storage-type gp2 \
   --publicly-accessible \
   --storage-encrypted \
