@@ -1,3 +1,9 @@
+-- postgresql://[user[:password]@][netloc][:port][/dbname][?param1=value1&...]
+-- like this  postgresql://postgres:password@127.0.0.1:5432/cruddur
+
+-- PROD_CONNECTION_URL= postgresql://postgres:DramaneHie@cruddur-db-instance.cdmtknpdvfmz.eu-west-3.rds.amazonaws.com:5432/cruddur
+-- export CONNECTION_URL="postgresql://postgres:password@127.0.0.1:5432/cruddur"
+
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 DROP TABLE IF EXISTS public.users;
