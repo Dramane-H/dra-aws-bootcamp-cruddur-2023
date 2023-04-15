@@ -1,7 +1,7 @@
 #! /usr/bin/bash
 
 
-echo "db-schema-load"
+echo $seed_path
 
 seed_path="$(realpath .)/db/seed.sql"
 
