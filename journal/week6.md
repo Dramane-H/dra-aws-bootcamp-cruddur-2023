@@ -69,7 +69,7 @@ else:
 ## Create CloudWatch Log Group
 
 ```sh
-aws logs create-log-group --log-group-name cruddur
+aws logs create-log-group --log-group-name cruddur # dramzy-web-group
 aws logs put-retention-policy --log-group-name cruddur --retention-in-days 1
 ```
 
