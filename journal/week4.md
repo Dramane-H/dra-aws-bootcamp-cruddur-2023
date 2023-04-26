@@ -1,7 +1,5 @@
 # Week 4 — Postgres and RDS
 
-sudo apt update
-sudo apt install postgresql postgresql-contrib
 
 To connect to psql via the psql client cli tool remember to use the host flag to specific localhost.
 
@@ -146,15 +144,8 @@ mkdir /workspace/aws-bootcamp-cruddur-2023/backend-flask/bin
 ```
 
 ```sh
-export CONNECTION_URL="postgresql://postgres:password@127.0.0.1:5433/crud"
-gp env CONNECTION_URL="postgresql://postgres:password@localhost:5433/crud"
-
-export PROD_CONNECTION_URL="postgresql://cruddurroot:dramanedb123@cruddur-db-instance.cdmtknpdvfmz.eu-west-3.rds.amazonaws.com:5432/crud"
-
-gp env PROD_CONNECTION_URL="postgresql://cruddurroot:dramanedb123@cruddur-db-instance.cdmtknpdvfmz.eu-west-3.rds.amazonaws.com:5432/crud"
-
-
-then "psql $CONNECTION_URL
+export CONNECTION_URL="postgresql://postgres:pssword@127.0.0.1:5433/cruddur"
+gp env CONNECTION_URL="postgresql://postgres:pssword@127.0.0.1:5433/cruddur"
 ```
 
 We'll create a new bash script `bin/db-connect`
@@ -366,15 +357,13 @@ aws rds create-db-instance \
   --engine postgres \
   --engine-version  14.6 \
   --master-username root \
-  # change your password
   --master-user-password huEE33z2Qvl383 \
   --allocated-storage 20 \
   --availability-zone ca-central-1a \
   --backup-retention-period 0 \
   --port 5432 \
   --no-multi-az \
-  # change your db name
-  --db-name cruddur \ 
+  --db-name cruddur \
   --storage-type gp2 \
   --publicly-accessible \
   --storage-encrypted \

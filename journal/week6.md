@@ -161,6 +161,7 @@ aws ecr create-repository \
 ```sh
 export ECR_BACKEND_FLASK_URL="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/backend-flask"
 echo $ECR_BACKEND_FLASK_URL
+
 ```
 
 #### Build Image
