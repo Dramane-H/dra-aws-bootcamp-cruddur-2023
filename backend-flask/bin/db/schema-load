@@ -5,6 +5,7 @@ NO_COLOR='\033[0m'
 LABEL="db-schema-load"
 printf "${CYAN}== ${LABEL}${NO_COLOR}\n"
 
+
 schema_path="$(realpath .)/db/schema.sql"
 echo $schema_path
 
@@ -15,4 +16,4 @@ else
   URL=$CONNECTION_URL
 fi
 
-psql $URL cruddur < $schema_path
+psql $URL crud < $schema_path
