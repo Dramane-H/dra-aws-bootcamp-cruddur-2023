@@ -18,7 +18,7 @@ services:
       AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
       AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
       AWS_COGNITO_USER_POOL_ID: "${AWS_COGNITO_USER_POOL_ID}"
-      AWS_COGNITO_USER_POOL_CLIENT_ID: "5k910s30ds7beka9tn3rpr7p1k"    
+      AWS_COGNITO_USER_POOL_CLIENT_ID: "5o7m14q2g6qa01pabitmg5vc2t"    
     build: ./backend-flask
     ports:
       - "4567:4567"
@@ -31,7 +31,7 @@ services:
       REACT_APP_AWS_PROJECT_REGION: "${AWS_DEFAULT_REGION}"
       REACT_APP_AWS_COGNITO_REGION: "${AWS_DEFAULT_REGION}"
       REACT_APP_AWS_USER_POOLS_ID: "${AWS_COGNITO_USER_POOL_ID}"
-      REACT_APP_CLIENT_ID: "5k910s30ds7beka9tn3rpr7p1k"
+      REACT_APP_CLIENT_ID: "5o7m14q2g6qa01pabitmg5vc2t"
     build:
       context: ./frontend-react-js
       dockerfile: Dockerfile.prod
