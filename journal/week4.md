@@ -144,8 +144,8 @@ mkdir /workspace/aws-bootcamp-cruddur-2023/backend-flask/bin
 ```
 
 ```sh
-export CONNECTION_URL="postgresql://postgres:pssword@127.0.0.1:5433/cruddur"
-gp env CONNECTION_URL="postgresql://postgres:pssword@127.0.0.1:5433/cruddur"
+export CONNECTION_URL="postgresql://postgres:password@127.0.0.1:5432/cruddur"
+gp env CONNECTION_URL="postgresql://postgres:password@127.0.0.1:5432/cruddur"
 ```
 
 We'll create a new bash script `bin/db-connect`
